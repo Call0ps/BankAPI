@@ -50,9 +50,7 @@ namespace TestBankAPI
         public override bool Equals(object obj)
         {
             var other = obj as UserAccount;
-            if (this.id == other.id && this.email == other.email)
-                return true;
-            return false;
+            return this.id == other.id && this.email == other.email;
         }
     }
 }
