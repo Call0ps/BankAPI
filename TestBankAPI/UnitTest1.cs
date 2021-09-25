@@ -1,10 +1,10 @@
-using NUnit.Framework;
-using BankAPI.Services;
 using BankAPI.Models;
+using BankAPI.Services;
+using NUnit.Framework;
 
 namespace TestBankAPI
 {
-    public class Tests
+    public partial class Tests
     {
         private HelloWorldService service = new();
         private UserAccountService uaService = new();
