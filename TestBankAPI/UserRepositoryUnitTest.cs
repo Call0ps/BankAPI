@@ -45,7 +45,7 @@ namespace TestBankAPI
                 new UserAccount(2, "asdfa@mail.com"),
                 new UserAccount(3, "asdfa@mail.com"),
                 new UserAccount(4, "asdfa@mail.com"),
-                new UserAccount(5, "asdfa@mail.com")
+                new UserAccount(5, "asdfa@mail.se")
             };
             }
 
