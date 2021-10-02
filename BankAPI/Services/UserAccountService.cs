@@ -1,9 +1,18 @@
-﻿using BankAPI.Models;
+﻿using System.Collections.Generic;
+using BankAPI.Models;
+using BankAPI.Repositories;
 
 namespace BankAPI.Services
 {
     public class UserAccountService
     {
+        public UserAccountService(IUserRepository repository)
+        {
+            this.UserRepository = repository;
+        }
+
+        private IUserRepository UserRepository { get; set; }
+
         /// <summary>
         /// Creates a user account
         /// </summary>
@@ -13,6 +22,10 @@ namespace BankAPI.Services
         public UserAccount CreateAccount(int id, string email)
         {
             return new UserAccount(id, email);
+        }
+        public List<UserAccount> GetDataBase()
+        {
+            return UserRepository.GetDatabase();
         }
     }
 }

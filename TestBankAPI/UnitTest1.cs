@@ -1,5 +1,6 @@
 using BankAPI.Models;
 using BankAPI.Services;
+using BankAPI.Repositories;
 using NUnit.Framework;
 
 namespace TestBankAPI
@@ -7,7 +8,7 @@ namespace TestBankAPI
     public partial class Tests
     {
         private HelloWorldService service = new();
-        private UserAccountService uaService = new();
+        private UserAccountService uaService = new(new HardcodedUserRepo());
 
         [SetUp]
         public void Setup()
