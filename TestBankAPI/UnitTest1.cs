@@ -8,7 +8,7 @@ namespace TestBankAPI
     public partial class Tests
     {
         private HelloWorldService service = new();
-        private UserAccountService uaService = new(new HardcodedUserRepo());
+        private UserAccountService uaService = new(new UserAccountRepositoryMock());
 
         [SetUp]
         public void Setup()

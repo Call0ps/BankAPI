@@ -14,7 +14,12 @@
         public override bool Equals(object obj)
         {
             var other = obj as UserAccount;
-            return this.id == other.id && this.email == other.email;
+            return this.id == other.id;
+        }
+
+        public override int GetHashCode()
+        {
+            return id.GetHashCode() ^ email.GetHashCode();
         }
     }
 }

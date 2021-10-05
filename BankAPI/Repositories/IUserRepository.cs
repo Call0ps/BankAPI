@@ -5,8 +5,10 @@ namespace BankAPI.Repositories
 {
     public interface IUserRepository
     {
-        public List<UserAccount> GetDatabase();
+        public List<UserAccount> All();
+        public bool Remove(UserAccount userAccount);
 
-        public bool SaveUserAccount(UserAccount userAccount);
+        public bool Insert(UserAccount userAccount);
+        public UserAccount Get(int id);
     }
 }

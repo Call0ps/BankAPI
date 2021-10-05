@@ -3,20 +3,23 @@ using BankAPI.Services;
 using BankAPI.Repositories;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
+using System;
 
 namespace TestBankAPI
 {
     partial class Tests
     {
+        private UserAccountService _userAccountService { get; set; }
         [SetUp]
         public void SetUp()
         {
+            _userAccountService = new UserAccountService(new UserAccountRepositoryMock());
         }
 
         [Test]
         public void CreateRepoAndUsers()
         {
-            var service = new UserAccountService(new HardcodedUserRepo());
             var expected = new List<UserAccount>()
             {
                 new UserAccount(1, "asdfa@mail.com"),
@@ -25,15 +28,25 @@ namespace TestBankAPI
                 new UserAccount(4, "asdfa@mail.com"),
                 new UserAccount(5, "asdfa@mail.com")
             };
-            var actual = service.GetDataBase();
+            var actual = _userAccountService.GetAll();
             Assert.AreEqual(expected, actual);
         }
-
-        internal class HardcodedUserRepo : IUserRepository
+        [Test]
+        public void InsertAccount()
         {
-            public HardcodedUserRepo()
+            Assert.IsFalse(_userAccountService.Insert(_userAccountService.CreateAccount(3, "mail.google@com.se")));
+        }
+        [Test]
+        public void RemoveAccount ()
+        {
+            Assert.IsTrue(_userAccountService.Remove(3));
+            Assert.IsFalse(_userAccountService.Remove(10));
+        }
+        internal class UserAccountRepositoryMock : IUserRepository
+        {
+            public UserAccountRepositoryMock()
             {
-                this.Database = new List<UserAccount>() {
+                this.Repository = new List<UserAccount>() {
                 new UserAccount(1, "asdfa@mail.com"),
                 new UserAccount(2, "asdfa@mail.com"),
                 new UserAccount(3, "asdfa@mail.com"),
@@ -41,17 +54,31 @@ namespace TestBankAPI
                 new UserAccount(5, "asdfa@mail.com")
                 };
             }
-
-            private List<UserAccount> Database { get; set; }
-
-            public List<UserAccount> GetDatabase()
+            private List<UserAccount> Repository { get; set; }
+            List<UserAccount> IUserRepository.All()
             {
-                return this.Database;
+                return Repository;
             }
-
-            public bool SaveUserAccount(UserAccount userAccount)
+            bool IUserRepository.Remove(UserAccount userAccount)
             {
-                throw new System.NotImplementedException();
+                return Repository.Remove(userAccount);
+            }
+            bool IUserRepository.Insert(UserAccount userAccount)
+            {
+                try
+                {
+                    Repository.Add(userAccount);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Console.Write(e.Message);
+                    return false;
+                }
+            }
+            UserAccount IUserRepository.Get(int id )
+            {
+                return Repository.Find(u => u.GetHashCode() == id.GetHashCode());
             }
         }
     }
