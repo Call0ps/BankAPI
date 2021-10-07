@@ -5,20 +5,22 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Reflection;
 
 namespace TestBankAPI
 {
     partial class Tests
     {
         private UserAccountService _userAccountService { get; set; }
+
         [SetUp]
-        public void SetUp()
+        public void SetUp ()
         {
             _userAccountService = new UserAccountService(new UserAccountRepositoryMock());
         }
 
         [Test]
-        public void CreateRepoAndUsers()
+        public void CreateRepoAndUsers ()
         {
             var expected = new List<UserAccount>()
             {
@@ -31,20 +33,23 @@ namespace TestBankAPI
             var actual = _userAccountService.GetAll();
             Assert.AreEqual(expected, actual);
         }
+
         [Test]
-        public void InsertAccount()
+        public void InsertAccount ()
         {
             Assert.IsFalse(_userAccountService.Insert(_userAccountService.CreateAccount(3, "mail.google@com.se")));
         }
+
         [Test]
         public void RemoveAccount ()
         {
-            Assert.IsTrue(_userAccountService.Remove(3));
-            Assert.IsFalse(_userAccountService.Remove(10));
+            Assert.IsFalse(_userAccountService.Remove(10), message: "couldn't remove 10");
+            Assert.IsTrue(_userAccountService.Remove(3), message: "couldn't remove 3");
         }
+
         internal class UserAccountRepositoryMock : IUserRepository
         {
-            public UserAccountRepositoryMock()
+            public UserAccountRepositoryMock ()
             {
                 this.Repository = new List<UserAccount>() {
                 new UserAccount(1, "asdfa@mail.com"),
@@ -54,16 +59,20 @@ namespace TestBankAPI
                 new UserAccount(5, "asdfa@mail.com")
                 };
             }
+
             private List<UserAccount> Repository { get; set; }
-            List<UserAccount> IUserRepository.All()
+
+            List<UserAccount> IUserRepository.All ()
             {
                 return Repository;
             }
-            bool IUserRepository.Remove(UserAccount userAccount)
+
+            bool IUserRepository.Remove ( UserAccount userAccount )
             {
                 return Repository.Remove(userAccount);
             }
-            bool IUserRepository.Insert(UserAccount userAccount)
+
+            bool IUserRepository.Insert ( UserAccount userAccount )
             {
                 try
                 {
@@ -76,9 +85,10 @@ namespace TestBankAPI
                     return false;
                 }
             }
-            UserAccount IUserRepository.Get(int id )
+
+            UserAccount IUserRepository.Get ( int id )
             {
-                return Repository.Find(u => u.GetHashCode() == id.GetHashCode());
+                return Repository.Find(u => u.Id == id);
             }
         }
     }

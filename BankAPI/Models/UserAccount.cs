@@ -5,21 +5,24 @@
         private int id;
         private string email;
 
-        public UserAccount(int id, string email)
+        public UserAccount ( int id, string email )
         {
-            this.id = id;
-            this.email = email;
+            this.Id = id;
+            this.Email = email;
         }
 
-        public override bool Equals(object obj)
+        public int Id { get => id; init => id = value; }
+        public string Email { get => email; private set => email = value; }
+
+        public override bool Equals ( object obj )
         {
             var other = obj as UserAccount;
-            return this.id == other.id;
+            return this.Id == other.Id;
         }
 
-        public override int GetHashCode()
+        public override int GetHashCode ()
         {
-            return id.GetHashCode() ^ email.GetHashCode();
+            return Id.GetHashCode();
         }
     }
 }
