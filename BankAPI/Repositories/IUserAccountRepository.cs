@@ -3,7 +3,7 @@ using BankAPI.Models;
 
 namespace BankAPI.Repositories
 {
-    public interface IUserRepository
+    public interface IUserAccountRepository
     {
         public List<UserAccount> All();
         public bool Remove(UserAccount userAccount);
