@@ -2,27 +2,36 @@
 {
     public class UserAccount
     {
-        private int id;
-        private string email;
-
-        public UserAccount ( int id, string email )
+        public UserAccount(int id, string email)
         {
             this.Id = id;
             this.Email = email;
         }
 
-        public int Id { get => id; init => id = value; }
-        public string Email { get => email; private set => email = value; }
+        public int Id { get; init; }
+        public string Email { get; private set; }
+        public bool SetNewEmail(string email)
+        {
+            if (this.Email == email)
+            {
+                throw new System.Exception("Email is the same as before");
+            }
+            else
+            {
+                this.Email = email;
+                return true;
+            }
+        }
 
-        public override bool Equals ( object obj )
+        public override bool Equals(object obj)
         {
             var other = obj as UserAccount;
             return this.Id == other.Id;
         }
 
-        public override int GetHashCode ()
+        public override int GetHashCode()
         {
-            return Id.GetHashCode();
+            return Id.GetHashCode()^Email.GetHashCode();
         }
     }
 }
