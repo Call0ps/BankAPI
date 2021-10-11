@@ -9,6 +9,6 @@ URL: https://projectbankportfolio.azurewebsites.net/
 ```http
 GET /api/HelloWorld
 ```
-A simple endpoint
+A simple endpoint, returns "Hello World"
 
 ---
