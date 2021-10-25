@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BankAPI.Models;
 using BankAPI.Services;
@@ -9,12 +10,12 @@ namespace BankAPI.Controllers
     [ApiController]
     public class UserAccountController : ControllerBase
     {
-        private readonly UserAccountService _userAccountService = new UserAccountService(new UserAccountRepository());
+        private readonly UserAccountService _userAccountService = new UserAccountService(new UserAccountRepositoryMock());
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok("Hello!");
+            return Ok(_userAccountService.GetAll());
         }
 
         [HttpPost]

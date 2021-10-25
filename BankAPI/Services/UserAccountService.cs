@@ -10,7 +10,7 @@ namespace BankAPI.Services
     {
         public UserAccountService ( IUserAccountRepository repository )
         {
-            this.Repository = repository;
+            Repository = repository;
         }
 
         private IUserAccountRepository Repository { get; set; }
@@ -34,28 +34,19 @@ namespace BankAPI.Services
         public bool Insert ( UserAccount userAccount )
         {
             var accounts = GetAll();
-            return accounts.Find(u => u.Equals(userAccount)) != null ? false : Repository.Insert(userAccount);
+            return accounts.Find(u => u.Equals(userAccount)) == null && Repository.Insert(userAccount);
         }
 
-        public void ChangeEmail(UserAccount changee, string emailChange)
+        public bool ChangeEmail(int id, string emailChange)
         {
-            var user = Repository.All().Where(u => u.Equals(changee)).SingleOrDefault();
-            user.SetNewEmail(emailChange);
+            var user = GetUserAccount(id);
+            return user?.SetNewEmail(emailChange) ?? false;
         }
 
-        public UserAccount Get(int v)
-        {
-            return Repository.Get(v);
-        }
+        public UserAccount Get(int id) => GetUserAccount(id);
 
-        public bool Remove ( int v )
-        {
-            return Repository.Remove(GetUserAccount(v));
-        }
+        public bool Remove ( int id ) => Repository.Remove(GetUserAccount(id));
 
-        private UserAccount GetUserAccount ( int v )
-        {
-            return Repository.Get(v);
-        }
+        private UserAccount GetUserAccount ( int id ) => Repository.Get(id);
     }
 }
