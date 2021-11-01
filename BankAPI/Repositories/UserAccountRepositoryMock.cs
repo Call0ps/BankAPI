@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using System.Net.Mail;
+using System.Runtime.InteropServices.ComTypes;
+using System.Threading.Tasks;
 using BankAPI.Models;
 
 namespace BankAPI.Repositories
 {
-    internal class UserAccountRepositoryMock : IUserAccountRepository
+    public class UserAccountRepositoryMock : IUserAccountRepository
     {
-        public List<UserAccount> All()
+        public async Task<List<UserAccount>> All()
         {
             return new List<UserAccount>()
             {
@@ -16,17 +18,17 @@ namespace BankAPI.Repositories
             };
         }
 
-        public UserAccount Get(int id)
+        public async Task<UserAccount> Get(int id)
         {
             return new UserAccount(id, "test@test.com");
         }
 
-        public bool Insert(UserAccount userAccount)
+        public async Task<bool> Insert(UserAccount userAccount)
         {
             return true;
         }
 
-        public bool Remove(UserAccount userAccount)
+        public async Task<bool> Remove(UserAccount userAccount)
         {
             return true;
         }

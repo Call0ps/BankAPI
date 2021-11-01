@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using BankAPI.Models;
 using BankAPI.Repositories;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BankAPI.Services
 {
@@ -21,32 +22,31 @@ namespace BankAPI.Services
         /// <param name="id">Unique id</param>
         /// <param name="email">User email</param>
         /// <returns>Created UserAccount object</returns>
-        public UserAccount CreateAccount ( int id, string email )
+        public async Task<UserAccount> CreateAccount ( int id, string email )
         {
             return new UserAccount(id, email);
         }
 
-        public List<UserAccount> GetAll ()
+        public async Task<List<UserAccount>> GetAll ()
         {
-            return Repository.All();
+            return await Repository.All();
         }
 
-        public bool Insert ( UserAccount userAccount )
+        public async Task<bool> Insert ( UserAccount userAccount )
         {
-            var accounts = GetAll();
-            return accounts.Find(u => u.Equals(userAccount)) == null && Repository.Insert(userAccount);
+            var accounts = await GetAll();
+            return accounts.Find(u => u.Equals(userAccount)) == null && Repository.Insert(userAccount).Result;
         }
 
-        public bool ChangeEmail(int id, string emailChange)
+        public async Task<bool> ChangeEmail(int id, string emailChange)
         {
-            var user = GetUserAccount(id);
+            var user = await GetUserAccount(id);
             return user?.SetNewEmail(emailChange) ?? false;
         }
 
-        public UserAccount Get(int id) => GetUserAccount(id);
+        public async Task<UserAccount> Get(int id) => await GetUserAccount(id);
+        public async Task<bool> Remove ( int id ) => await Repository.Remove(await GetUserAccount(id));
 
-        public bool Remove ( int id ) => Repository.Remove(GetUserAccount(id));
-
-        private UserAccount GetUserAccount ( int id ) => Repository.Get(id);
+        private async Task<UserAccount> GetUserAccount ( int id ) => await Repository.Get(id);
     }
 }

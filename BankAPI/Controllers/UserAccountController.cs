@@ -4,6 +4,8 @@ using BankAPI.Models;
 using BankAPI.Services;
 using BankAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+
 namespace BankAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -13,25 +15,36 @@ namespace BankAPI.Controllers
         private readonly UserAccountService _userAccountService = new UserAccountService(new UserAccountRepositoryMock());
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get(int? id)
         {
-            return Ok(_userAccountService.GetAll());
+            return !id.Equals(null) ? Ok(await _userAccountService.Get(id.Value)) : Ok(await _userAccountService.GetAll());
         }
 
+        /// <summary>
+        /// Todo: Make it do a check before trying to add. Check on email instead since id will be set by db.? 
+        /// </summary>
+        /// <param name="newAccount"></param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Create(NewAccount newAccount)
+        public async Task<IActionResult> Create(UserAccount newAccount)
         {
-            var newU = _userAccountService.CreateAccount(newAccount.Id, newAccount.Email);
-            if (_userAccountService.Insert(newU))
-                return CreatedAtAction(nameof(Create), newU);
+            if (await _userAccountService.Insert(newAccount))
+                return CreatedAtAction(nameof(Create), newAccount);
             else
                 return BadRequest();
         }
 
-        public class NewAccount
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
         {
-            public int Id { get; set; }
-            public string Email { get; set; }
+            return Ok(await _userAccountService.Remove(id));
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangeEmail(int id,string newMail)
+        {
+            return Ok(await _userAccountService.ChangeEmail(id: id, emailChange: newMail));
+
         }
     }
 }
