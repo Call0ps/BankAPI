@@ -34,13 +34,13 @@ namespace BankAPI.Controllers
                 return BadRequest();
         }
 
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
             return Ok(await _userAccountService.Remove(id));
 
         }
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> ChangeEmail(int id,string newMail)
         {
             return Ok(await _userAccountService.ChangeEmail(id: id, emailChange: newMail));
