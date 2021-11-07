@@ -10,26 +10,26 @@ namespace BankAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserAccountController : ControllerBase
+    public class UserController : ControllerBase
     {
-        private readonly UserAccountService _userAccountService = new UserAccountService(new UserAccountRepositoryMock());
+        private readonly UserService _userService = new UserService(new UserRepositoryMock());
 
         [HttpGet]
         public async Task<IActionResult> Get(int? id)
         {
-            return !id.Equals(null) ? Ok(await _userAccountService.Get(id.Value)) : Ok(await _userAccountService.GetAll());
+            return !id.Equals(null) ? Ok(await _userService.Get(id.Value)) : Ok(await _userService.GetAll());
         }
 
         /// <summary>
         /// Todo: Make it do a check before trying to add. Check on email instead since id will be set by db.? 
         /// </summary>
-        /// <param name="newAccount"></param>
+        /// <param name="newUser"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Create(UserAccount newAccount)
+        public async Task<IActionResult> Create(User newUser)
         {
-            if (await _userAccountService.Insert(newAccount))
-                return CreatedAtAction(nameof(Create), newAccount);
+            if (await _userService.Insert(newUser))
+                return CreatedAtAction(nameof(Create), newUser);
             else
                 return BadRequest();
         }
@@ -37,13 +37,15 @@ namespace BankAPI.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
-            return Ok(await _userAccountService.Remove(id));
+            var result = await _userService.Remove(id) as object;
+            
+            return Ok(result);
 
         }
         [HttpPut]
         public async Task<IActionResult> ChangeEmail(int id,string newMail)
         {
-            return Ok(await _userAccountService.ChangeEmail(id: id, emailChange: newMail));
+            return Ok(await _userService.ChangeEmail(id: id, emailChange: newMail));
 
         }
     }

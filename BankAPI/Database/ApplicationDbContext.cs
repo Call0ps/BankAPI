@@ -5,7 +5,7 @@ namespace BankAPI.Database
 {
     public class ApplicationDbContext: DbContext
     {
-        public DbSet<UserAccount> UserAccounts { get; set; }
+        public DbSet<User> UserAccounts { get; set; }
 
         public ApplicationDbContext()
         {

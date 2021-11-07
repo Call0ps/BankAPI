@@ -1,8 +1,8 @@
 ﻿namespace BankAPI.Models
 {
-    public class UserAccount
+    public class User
     {
-        public UserAccount(int id, string email)
+        public User(int id, string email)
         {
             this.Id = id;
             this.Email = email;
@@ -23,15 +23,15 @@
             }
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            var other = obj as UserAccount;
-            return this.Id == other.Id;
+            var other = obj as User;
+            return Id == other?.Id;
         }
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode()^Email.GetHashCode();
+            return Id.GetHashCode();
         }
     }
 }
