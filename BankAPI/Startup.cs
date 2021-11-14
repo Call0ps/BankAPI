@@ -1,5 +1,7 @@
+using BankAPI.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +26,8 @@ namespace BankAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BankAPI", Version = "v1" });
             });
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer("name=ConnectionStrings:Default"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -5,7 +5,7 @@ namespace BankAPI.Database
 {
     public class ApplicationDbContext: DbContext
     {
-        public DbSet<User> UserAccounts { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public ApplicationDbContext()
         {
@@ -19,7 +19,9 @@ namespace BankAPI.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>().Property(prop => prop.Id).IsRequired().ValueGeneratedOnAdd();
+            modelBuilder.Entity<User>().Property(p => p.Email).IsRequired();
         }
     }
 }
