@@ -12,15 +12,15 @@ namespace BankAPI.Repositories
         {
             return new List<User>()
             {
-                new User(1, "one@mail.com"),
-                new User(2, "two@mail.com"),
-                new User(3, "three@mail.com")
+                new User("two@mail.com"),
+                new User("one@mail.com"),
+                new User("three@mail.com")
             };
         }
 
         public async Task<User> Get(int id)
         {
-            return new User(id, "test@test.com");
+            return new User("test@test.com");
         }
 
         public async Task<bool> Insert(User user)

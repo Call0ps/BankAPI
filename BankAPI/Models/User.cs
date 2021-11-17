@@ -2,13 +2,12 @@
 {
     public class User
     {
-        public User(int id, string email)
+        public User(string email)
         {
-            this.Id = id;
             this.Email = email;
         }
 
-        public int Id { get; init; }
+        public int Id { get; set; }
         public string Email { get; private set; }
         public bool SetNewEmail(string email)
         {
