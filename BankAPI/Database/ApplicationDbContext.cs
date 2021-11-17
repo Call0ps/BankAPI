@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using BankAPI.Models;
+using System.Configuration;
 
 namespace BankAPI.Database
 {
@@ -11,10 +12,9 @@ namespace BankAPI.Database
         {
             
         }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            base.OnConfiguring(optionsBuilder);
+            base.OnConfiguring(optionsBuilder.UseSqlServer());
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -19,12 +19,11 @@ namespace BankAPI.Services
         /// <summary>
         /// Creates a user 
         /// </summary>
-        /// <param name="id">Unique id</param>
         /// <param name="email">User email</param>
         /// <returns>Created User object</returns>
-        public async Task<User> Create ( int id, string email )
+        public User Create (string email )
         {
-            return new User(id, email);
+            return new User(email);
         }
 
         public async Task<List<User>> GetAll ()
