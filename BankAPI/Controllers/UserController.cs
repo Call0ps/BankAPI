@@ -12,7 +12,13 @@ namespace BankAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserService _userService = new UserService(new UserRepositoryMock());
+        private readonly IUserRepository repository;
+        private readonly UserService _userService;
+        public UserController(IUserRepository userRepository)
+        {
+            repository = userRepository;
+            _userService = new(repository);
+        }
 
         [HttpGet]
         public async Task<IActionResult> Get(int? id)

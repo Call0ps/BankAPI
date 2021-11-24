@@ -1,4 +1,7 @@
 using BankAPI.Database;
+using BankAPI.Services;
+using BankAPI.Repositories;
+using BankAPI.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -21,12 +24,16 @@ namespace BankAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped(typeof(IUserRepository), typeof(UserRepositoryLocal));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BankAPI", Version = "v1" });
             });
-            services.AddDbContext<ApplicationDbContext>().;
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer("name=ConnectionStrings:Default");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
