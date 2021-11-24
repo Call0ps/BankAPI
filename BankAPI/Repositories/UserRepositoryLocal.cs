@@ -10,7 +10,11 @@ namespace BankAPI.Repositories
 {
     public class UserRepositoryLocal : IUserRepository
     {
-        private readonly ApplicationDbContext _dbContext = new();
+        private readonly ApplicationDbContext _dbContext;
+        public UserRepositoryLocal(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
 
         public async Task<List<User>> All()
         {
@@ -37,6 +41,7 @@ namespace BankAPI.Repositories
             try
             {
                 var result = await _dbContext.Users.AddAsync(user);
+                await _dbContext.SaveChangesAsync();
                 return true;
             }
             catch (Exception e)
@@ -48,7 +53,7 @@ namespace BankAPI.Repositories
 
         public async Task<User> Get(int id)
         {
-            return await _dbContext.Users.SingleAsync(u => u.Id == id);
+            return await _dbContext.Users.SingleAsync(u => u.Id == id.ToString());
         }
     }
 }
