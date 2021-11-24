@@ -1,14 +1,12 @@
-﻿namespace BankAPI.Models
-{
-    public class User
-    {
-        public User(string email)
-        {
-            this.Email = email;
-        }
+﻿using Microsoft.AspNetCore.Identity;
 
-        public int Id { get; set; }
-        public string Email { get; private set; }
+namespace BankAPI.Models
+{
+    public class User : IdentityUser
+    {
+        public User(string email):base(email)
+        {
+        }
         public bool SetNewEmail(string email)
         {
             if (this.Email == email)
