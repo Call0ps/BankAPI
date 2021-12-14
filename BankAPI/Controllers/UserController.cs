@@ -12,18 +12,18 @@ namespace BankAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository repository;
-        private readonly UserService _userService;
-        public UserController(IUserRepository userRepository)
+        private readonly IUserRepository _repository;
+        private readonly IUserService _service;
+        public UserController(IUserRepository userRepository, IUserService userService)
         {
-            repository = userRepository;
-            _userService = new(repository);
+            _repository = userRepository;
+            _service = userService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get(int? id)
         {
-            return !id.Equals(null) ? Ok(await _userService.Get(id.Value)) : Ok(await _userService.GetAll());
+            return !id.Equals(null) ? Ok(await _service.Get(id.Value)) : Ok(await _service.GetAll());
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace BankAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(User newUser)
         {
-            if (await _userService.Insert(newUser))
+            if (await _service.Insert(newUser))
                 return CreatedAtAction(nameof(Create), newUser);
             else
                 return BadRequest();
@@ -43,7 +43,7 @@ namespace BankAPI.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = await _userService.Remove(id) as object;
+            var result = await _service.Remove(id) as object;
             
             return Ok(result);
 
@@ -51,7 +51,7 @@ namespace BankAPI.Controllers
         [HttpPut]
         public async Task<IActionResult> ChangeEmail(int id,string newMail)
         {
-            return Ok(await _userService.ChangeEmail(id: id, emailChange: newMail));
+            return Ok(await _service.ChangeEmail(id: id, emailChange: newMail));
 
         }
     }

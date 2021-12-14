@@ -7,7 +7,24 @@ using System.Threading.Tasks;
 
 namespace BankAPI.Services
 {
-    public class UserService
+    public interface IUserService
+    {
+        /// <summary>
+        /// Creates a user 
+        /// </summary>
+        /// <param name="email">User email</param>
+        /// <returns>Created User object</returns>
+        User Create (string email );
+
+        Task<List<User>> GetAll ();
+        Task<bool> Insert ( User user );
+        Task<bool> ChangeEmail(int id, string emailChange);
+        Task<User> Get(int id);
+        Task<bool> Remove ( int id );
+        Task<User> GetUser ( int id );
+    }
+
+    public class UserService : IUserService
     {
         public UserService ( IUserRepository repository )
         {
@@ -46,6 +63,6 @@ namespace BankAPI.Services
         public async Task<User> Get(int id) => await GetUser(id);
         public async Task<bool> Remove ( int id ) => await Repository.Remove(await GetUser(id));
 
-        private async Task<User> GetUser ( int id ) => await Repository.Get(id);
+        public async Task<User> GetUser ( int id ) => await Repository.Get(id);
     }
 }
