@@ -8,6 +8,10 @@ namespace BankAPI.Database
     {
         public DbSet<User> Users { get; set; }
 
+        public ApplicationDbContext()
+        {
+        }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbContextOptions):base(dbContextOptions)
         {
             
