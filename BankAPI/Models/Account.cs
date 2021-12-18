@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
-
 namespace BankAPI.Models
 {
+    #pragma warning disable
     public class Account
     {
-        public Guid Guid { get; set; }
+        public Guid Id { get; set; }
+        public string UserId { get; set; }
+        public User User { get; set; }
         public double Balance {get; private set; }
         public double Interest { get; private set; }
         private List<double> _historicBalance = new List<double>();

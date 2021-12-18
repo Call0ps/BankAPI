@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace BankAPI.Models
 {
     public class User : IdentityUser
     {
+        #pragma warning disable
+        public List<Account> Accounts { get; set; }
         public User(string email):base(email)
         {
         }

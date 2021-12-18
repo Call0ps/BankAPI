@@ -34,7 +34,7 @@ namespace BankAPI
             });
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer("name=ConnectionStrings:Default");
+                options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
         }
 
