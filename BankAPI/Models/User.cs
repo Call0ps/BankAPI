@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
 namespace BankAPI.Models
 {
     public class User : IdentityUser
     {
-        #pragma warning disable
-        public List<Account> Accounts { get; set; }
-        public User(string email):base(email)
+#pragma warning disable
+        public virtual ICollection<Account> Accounts { get; set; }
+
+        public User(string email) : base(email)
         {
         }
+
         public bool SetNewEmail(string email)
         {
             if (this.Email == email)

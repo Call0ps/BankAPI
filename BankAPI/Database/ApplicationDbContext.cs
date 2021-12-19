@@ -1,10 +1,5 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using BankAPI.Models;
-using System.Configuration;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 
 namespace BankAPI.Database
 {
@@ -19,7 +14,18 @@ namespace BankAPI.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+            modelBuilder.Entity<Account>(accEnt =>
+            {
+                accEnt
+                    .HasOne<User>(u => u.User).WithMany(u=>u.Accounts);
+                accEnt
+                    .HasKey(a => a.AccountId);
+            });
+            modelBuilder.Entity<User>(userEnt =>
+            {
+                userEnt
+                    .HasKey(u => u.Id);
+            });
         }
     }
 }

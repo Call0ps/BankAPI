@@ -1,29 +1,29 @@
-using System.Collections.Generic;
+using System;
 using System.Threading.Tasks;
 using BankAPI.Models;
 using BankAPI.Services;
-using BankAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace BankAPI.Controllers
 {
+    public class CreateUser
+    {
+        public string Email { get; set; }
+    }
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _repository;
         private readonly IUserService _service;
-        public UserController(IUserRepository userRepository, IUserService userService)
+        public UserController(IUserService userService)
         {
-            _repository = userRepository;
             _service = userService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(int? id)
+        public async Task<IActionResult> Get(string? id)
         {
-            return !id.Equals(null) ? Ok(await _service.Get(id.Value)) : Ok(await _service.GetAll());
+            return !id.Equals(null) ? Ok(await _service.Get(id)) : Ok(await _service.GetAll());
         }
 
         /// <summary>
@@ -32,16 +32,32 @@ namespace BankAPI.Controllers
         /// <param name="newUser"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Create(User newUser)
+        public async Task<IActionResult> Create(CreateUser newUser)
         {
-            if (await _service.Insert(newUser))
+            if (await _service.Create(newUser.Email))
                 return CreatedAtAction(nameof(Create), newUser);
             else
                 return BadRequest();
         }
+        [Route("/user/account")]
+        [HttpPost]
+        public async Task<IActionResult> CreateAccount(AccountCreationRequest account)
+        {
+            try
+            {
+                var creation = await _service.CreateAccount(account: account);
+                return CreatedAtAction(nameof(CreateAccount), account);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
+        }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             var result = await _service.Remove(id) as object;
             
@@ -49,7 +65,7 @@ namespace BankAPI.Controllers
 
         }
         [HttpPut]
-        public async Task<IActionResult> ChangeEmail(int id,string newMail)
+        public async Task<IActionResult> ChangeEmail(string id,string newMail)
         {
             return Ok(await _service.ChangeEmail(id: id, emailChange: newMail));
 

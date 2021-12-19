@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using BankAPI.Database;
 using BankAPI.Models;
@@ -51,9 +50,23 @@ namespace BankAPI.Repositories
             }
         }
 
-        public async Task<User> Get(int id)
+        public async Task<User> Get(string id)
         {
-            return await _dbContext.Users.SingleAsync(u => u.Id == id.ToString());
+            return await _dbContext.Users.SingleAsync(u => u.Id == id);
+        }
+
+        public async Task<bool> Update(User user)
+        {
+            try
+            {
+                _dbContext.Users.Update(user);
+                return await new Task<bool>(() => true);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
 }

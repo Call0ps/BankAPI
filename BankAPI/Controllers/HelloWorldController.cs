@@ -7,14 +7,19 @@ namespace BankAPI.Controllers
     [ApiController]
     public class HelloWorldController : ControllerBase
     {
-        private readonly HelloWorldService service = new();
+        private readonly IHelloWorldService service;
+
+        public HelloWorldController(IHelloWorldService helloWorldService)
+        {
+            service = helloWorldService;
+        }
 
         /// <summary>
         /// Calls the Hello World-method from the service and returns it.
         /// </summary>
         /// <returns>Results from service</returns>
         [HttpGet]
-        public string Get()
+        public MyClass Get()
         {
             return service.HelloWorld();
         }
